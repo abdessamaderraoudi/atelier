@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="fr"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="jakarta.faces.core"
+      xmlns:h="jakarta.faces.html"
+      xmlns:ui="jakarta.faces.facelets">
+<f:view>
+    <f:metadata>
+        <f:viewAction action="#{panierBean.loadPanier}"/>
+    </f:metadata>
+    <h:head>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <title>Panier • e‑Commerce</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+    </h:head>
+    <h:body class="bg-gray-50 text-gray-900 min-h-screen">
+        <ui:include src="/WEB-INF/includes/header.xhtml"/>
+
+        <main class="max-w-5xl mx-auto px-4 py-8">
+            <h1 class="text-2xl font-semibold mb-6">Votre panier</h1>
+
+            <h:panelGroup rendered="#{empty authBean.currentUser}" styleClass="bg-yellow-50 border border-yellow-200 rounded p-4 mb-6">
+                <p class="text-yellow-800">Veuillez vous connecter pour utiliser le panier.</p>
+                <div class="mt-2">
+                    <h:link outcome="/vues/login.xhtml" styleClass="text-indigo-600 hover:underline">Se connecter</h:link>
+                </div>
+            </h:panelGroup>
+
+            <h:panelGroup rendered="#{not empty authBean.currentUser}">
+                <h:panelGroup rendered="#{empty panierBean.panier or empty panierBean.panier.lignes}">
+                    <div class="bg-white border rounded p-6 text-gray-600">Votre panier est vide.</div>
+                </h:panelGroup>
+
+                <h:panelGroup rendered="#{not empty panierBean.panier and not empty panierBean.panier.lignes}">
+                    <div class="bg-white border rounded">
+                        <div class="grid grid-cols-12 text-sm font-medium text-gray-500 border-b px-4 py-2">
+                            <div class="col-span-6">Produit</div>
+                            <div class="col-span-2 text-right">Prix</div>
+                            <div class="col-span-2 text-center">Quantité</div>
+                            <div class="col-span-2 text-right">Sous‑total</div>
+                        </div>
+                        <ui:repeat value="#{panierBean.panier.lignes}" var="ligne">
+                            <div class="grid grid-cols-12 items-center px-4 py-3 border-b last:border-b-0">
+                                <div class="col-span-6">
+                                    <div class="text-gray-900 font-medium">#{ligne.produit.nom}</div>
+                                    <div class="text-gray-500 text-sm">#{ligne.produit.description}</div>
+                                </div>
+                                <div class="col-span-2 text-right">#{ligne.produit.prix} DH</div>
+                                <div class="col-span-2 text-center">
+                                    <h:form styleClass="inline-flex items-center justify-center gap-2">
+                                        <h:inputText value="#{ligne.quantite}" size="2"
+                                                     styleClass="w-16 text-center px-2 py-1 border rounded"/>
+                                        <h:commandButton value="Maj" action="#{panierBean.modifierQuantite(ligne)}"
+                                                         styleClass="px-2 py-1 text-sm bg-gray-200 rounded hover:bg-gray-300"/>
+                                    </h:form>
+                                </div>
+                                <div class="col-span-2 text-right">
+                                    #{ligne.sousTotal} DH
+                                    <h:form styleClass="inline-block ml-3">
+                                        <h:commandButton value="Supprimer" action="#{panierBean.supprimerDuPanier(ligne)}"
+                                                         styleClass="px-2 py-1 text-sm bg-red-600 text-white rounded hover:bg-red-500"/>
+                                    </h:form>
+                                </div>
+                            </div>
+                        </ui:repeat>
+                    </div>
+
+                    <div class="flex items-center justify-between mt-6">
+                        <h:link outcome="/vues/vitrine.xhtml" styleClass="text-indigo-600 hover:underline">Continuer mes achats</h:link>
+                        <div class="flex items-center gap-4">
+                            <div class="text-lg">Total: <span class="font-semibold text-indigo-700">#{panierBean.panier.total} DH</span></div>
+                            <h:link outcome="/vues/caisse.xhtml" styleClass="px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-500">Passer à la caisse</h:link>
+                        </div>
+                    </div>
+                </h:panelGroup>
+            </h:panelGroup>
+        </main>
+    </h:body>
+</f:view>
+</html>

@@ -1,0 +1,27 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:ui="jakarta.faces.facelets">
+    <header class="bg-gray-900 text-white">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+            <h:link outcome="/vues/vitrine.xhtml" styleClass="text-lg font-semibold tracking-wide">
+                e‑Commerce
+            </h:link>
+            <nav class="flex items-center gap-4">
+                <h:link outcome="/vues/vitrine.xhtml" styleClass="text-gray-200 hover:text-white">Vitrine</h:link>
+                <h:link outcome="/vues/panier.xhtml" styleClass="text-gray-200 hover:text-white">Panier</h:link>
+                <h:panelGroup rendered="#{not empty authBean.currentUser}">
+                    <h:link outcome="/vues/compte.xhtml" styleClass="text-gray-200 hover:text-white">
+                        #{authBean.currentUser.email}
+                    </h:link>
+                    <h:form style="display:inline">
+                        <h:commandButton value="Déconnexion" action="#{authBean.logout}" styleClass="ml-2 px-3 py-1 bg-gray-700 hover:bg-gray-600 rounded"/>
+                    </h:form>
+                </h:panelGroup>
+                <h:panelGroup rendered="#{empty authBean.currentUser}">
+                    <h:link outcome="/vues/login.xhtml" styleClass="px-3 py-1 bg-indigo-600 hover:bg-indigo-500 rounded text-white">Se connecter</h:link>
+                </h:panelGroup>
+            </nav>
+        </div>
+    </header>
+</ui:composition>
+
