@@ -487,14 +487,3 @@ INSERT INTO lignes_commande (commande_id, produit_id, produit_nom, prix_unitaire
 COMMIT;
 ```
 
-## 8. Améliorations Possibles
-Ce projet pose des bases solides. Les prochaines étapes d'amélioration pourraient inclure :
-- **Validation Avancée** : Implémenter la validation  `̀jakarta.validation` (Bean Validation) sur les entités et utiliser `<h:message>` dans JSF pour des retours utilisateur plus propres.
-
-- **Sécurité** : Remplacer le stockage de mot de passe en clair par un hachage (ex: BCrypt) et sécuriser les pages par rôle.
-
-- **Gestion des Stocks** : Décrémenter le stock d'un Produit lors de la validation d'une Commande.
-
-- **Tests** : Ajouter des tests d'intégration (ex: Arquillian) pour valider la logique de persistance et métier.
-
-- **Pipeline CI/CD** : Mettre en place un pipeline (ex: GitHub Actions) pour automatiser le build, les tests et le déploiement.
